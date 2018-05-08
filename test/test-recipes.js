@@ -5,6 +5,8 @@ const {app, runServer, closeServer} = require('../server');
 
 const expect = chai.expect;
 
+const should = chai.should();
+
 chai.use(chaiHttp);
 
 describe('Recipes', function() {
@@ -49,4 +51,32 @@ describe('Recipes', function() {
     });
 });
 
-		it()
+		it('should update recipes on PUT', function() {
+			const updateData = {
+				name: 'banana bread',
+				ingredients: ['bananas', 'bread']
+			};
+			return chai.request(app)
+			.get('/recipes')
+      .then(function(res) {
+        updateData.id = res.body[0].id;
+				return chai.request(app)
+          .put(`/recipes/${updateData.id}`)
+          .send(updateData);
+      })
+      .then(function(res) {
+        res.should.have.status(204);
+      });
+		});
+
+		it('should delete recipes on DELETE', function() {
+			return chai.request(app)
+			.get('/recipes')
+			.then(function(res) {
+				return chai.request(app)
+				.delete(`/recipes/${res.body[0].id}`);
+			})
+			.then(function(res) {
+				expect(res).to.have.status(204);
+			});
+		});

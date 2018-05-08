@@ -1,2 +1,7 @@
 language: node_js
 node_js: node
+
+deploy:
+  provider: heroku
+  api_key: f8bfe858-96db-4a19-93d9-88455832ae75
+  app: rocky-earth-13131
